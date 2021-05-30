@@ -1,0 +1,62 @@
+
+import pandas as pd
+import matplotlib
+from pylab import title, figure, xlabel, ylabel, xticks, bar, legend, axis, savefig
+from fpdf import FPDF
+from PIL import Image
+
+def pdfgenerator(image,data):
+    image = Image.open(image)
+    new_image = image.resize((400, 400))
+    new_image.save('/Users/udaytripathi/Desktop/otoai_test_image.png')
+
+    if (data == 1):
+        classifier = 'Normal'
+        action = 'Stay at home'
+    else:
+        classifier = 'Abnormal'
+        action = 'Please see your PCP'
+        
+    patient_name = "John Doe"
+    gender = "Male"
+    DOB = "01/01/2000"
+    address = "1 Main Street Philadelphia, PA 19104"
+    physician_name = "Anthony Cody"
+    
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_xy(0, 0)
+    pdf.set_font('helvetica', 'B', 12)
+    pdf.cell(5)
+    pdf.image('/Users/udaytripathi/Desktop/otoAI_logo.png', x = None, y = None, w = 20, h = 0, type = '', link = '')
+    
+    pdf.cell(60)
+    pdf.cell(90, 10, "OtoAI Ear Exam Results and Preliminary Diagnosis", 0, 2, 'C')
+    pdf.cell(90, 2, " ", 0, 2, 'C')
+    pdf.cell(-40)
+    pdf.set_font('helvetica', '', 12)
+    pdf.cell(160, 10, 'Patient Name:' + " " + patient_name, 1, 2, 'L')
+    pdf.cell(160, 10, 'Gender:' + " " + gender, 1, 2, 'L')
+    pdf.cell(160, 10, 'Date of Birth (MM/DD/YYYY):' + " " + DOB, 1, 2, 'L')
+    pdf.cell(160, 10, 'Address:' + " " + address, 1, 2, 'L')
+    pdf.cell(160, 10, 'Physician Name:' + " " + physician_name, 1, 2, 'L')
+    pdf.cell(-120)
+    pdf.set_font('helvetica', '', 12)
+
+    pdf.cell(-70)
+    pdf.cell(90, 5, " ", 0, 2, 'C')
+    pdf.cell(200)
+    pdf.image('/Users/udaytripathi/Desktop/otoai_test_image.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+    
+    pdf.cell(90, 2, " ", 0, 2, 'C')
+    pdf.cell(140, 10, 'Classification: '+ '%s' % classifier, 1, 2, 'C')
+    pdf.cell(140, 10, 'Percent Accuracy: '  '%s' % '85%', 1, 2, 'C')
+    
+    pdf.cell(90,5, " ", 0, 2, 'C')
+    pdf.cell(-20)
+    pdf.set_font('helvetica', '', 8)
+    pdf.cell(40)
+    pdf.cell(90,10,"While the OtoAI algorithm is robust in nature, patients should refer to their primary care physicians for next steps",0,2,'C')
+    pdf.output('output.pdf', 'F')
+    
+pdfgenerator('/Users/udaytripathi/Desktop/otoai_test_image.png',1)
